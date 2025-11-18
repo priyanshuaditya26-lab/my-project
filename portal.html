@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NHREC Portal — Checklist</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    :root {
+      --portal-green: #0f6b45;
+      --portal-dark: #0b4f36;
+      --panel-bg: #ffffff;
+    }
+
+    .portal-wrap { display: flex; min-height: 100vh; background: #f3f6f8; }
+
+    /* Sidebar */
+    .portal-sidebar {
+      width: 260px;
+      background: var(--portal-green);
+      color: #fff;
+      padding: 2rem 1.25rem;
+      box-shadow: 2px 0 6px rgba(0,0,0,0.06);
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+    }
+    .portal-brand { display:flex; gap:0.8rem; align-items:center; margin-bottom:1rem; }
+    .portal-brand img { width:36px; height:36px; border-radius:6px; object-fit:cover; background:#fff; padding:3px; }
+    .sidebar-link { display:block; padding:10px 12px; border-radius:8px; color: #e6f7ef; font-weight:600; margin:6px 0; }
+    .sidebar-link.active { background: rgba(255,255,255,0.06); color:#fff; }
+
+    .sidebar-footer { margin-top:auto; font-size:0.95rem; opacity:0.9; }
+
+    /* Main content */
+    .portal-main { flex:1; display:flex; flex-direction:column; }
+    .portal-header {
+      height:64px;
+      background: linear-gradient(90deg,var(--portal-green),var(--portal-dark));
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .portal-header h2 { margin:0; font-size:1.05rem; font-weight:700; letter-spacing:0.2px; }
+    .header-actions { display:flex; gap:12px; align-items:center; }
+
+    .avatar { width:36px; height:36px; border-radius:50%; background:#ffffff22; display:inline-flex; align-items:center; justify-content:center; color:white; font-weight:700; }
+
+    .content { padding: 28px; }
+
+    .panel { background: var(--panel-bg); border-radius: 10px; padding: 22px; box-shadow: 0 1px 4px rgba(10,10,10,0.04); }
+
+    .checklist-title { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+    .checklist-title h3 { margin:0; color: #0b2b3a; }
+
+    .checklist-table { width:100%; border-collapse:collapse; margin-top:8px; }
+    .checklist-table tr { border-bottom: 1px solid #eef3f6; }
+    .checklist-table td { padding:16px 12px; vertical-align:middle; }
+    .checklist-item { color:#0f2b3a; font-weight:600; }
+
+    .check-col { width:260px; text-align:center; }
+
+    /* Checkbox styling */
+    .checkbox {
+      width:22px; height:22px; border:2px solid #234a59; border-radius:6px; display:inline-block; position:relative; cursor:pointer;
+    }
+    .checkbox input { display:none; }
+    .checkbox .tick { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:14px; color: #ffffff; background: transparent; opacity:0; }
+    .checkbox input:checked + .tick { opacity:1; background: #0f6b45; border-radius:6px; }
+
+    /* Inline validation message */
+    .field-help { display:block; margin-top:6px; font-size:0.9rem; color:#c3422c; text-align:center; visibility:hidden; opacity:0; transition:opacity 150ms ease; }
+    .field-help.visible { visibility:visible; opacity:1; }
+
+    .panel-actions { margin-top:18px; display:flex; gap:12px; align-items:center; }
+    .btn { padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
+    .btn-primary { background:#1fb35d; color:white; }
+    .btn-ghost { background:transparent; border:1px solid #d1d7da; color:#0b2b3a; }
+
+    /* Mark required rows visually (small *) */
+    .checklist-item.required::after { content: " *"; color: #c3422c; font-weight:700; margin-left:4px; font-size:0.9rem; }
+
+    @media (max-width:900px){
+      .portal-sidebar { display:none; }
+      .portal-header { padding:0 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal-wrap">
+    <!-- Sidebar -->
+    <aside class="portal-sidebar" role="navigation" aria-label="Main navigation">
+      <div class="portal-brand">
+        <img src="image/logo.png" alt="NHREC logo" />
+        <div>
+          <strong>NHREC</strong><br />
+          <small style="opacity:0.9">Research Ethics Portal</small>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="sidebar-link active" href="#">Home</a>
+        <a class="sidebar-link" href="#">My Profile</a>
+
+        <div class="sidebar-section" aria-labelledby="app-label">
+          <div style="opacity:0.9; font-size:0.85rem; margin:8px 0;">APPLICATION</div>
+          <a class="sidebar-link" href="#">New Application</a>
+          <a class="sidebar-link" href="#">View Applications</a>
+        </div>
+
+        <div class="sidebar-section" style="margin-top:18px;">
+          <div style="opacity:0.9; font-size:0.85rem; margin:8px 0;">USEFUL LINKS</div>
+          <a class="sidebar-link" href="faq.html">FAQs</a>
+          <a class="sidebar-link" href="resources.html">Resources</a>
+          <a class="sidebar-link" href="https://nhrec.gov.ng/nhrec-portal/" target="_blank">NHREC Website</a>
+        </div>
+
+        <div class="sidebar-footer">
+          <small>© 2025 NRECOI</small>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main area -->
+    <main class="portal-main" role="main">
+      <header class="portal-header">
+        <h2>National Health Research Ethics Committee, Nigeria</h2>
+        <div class="header-actions">
+          <button id="helpBtn" class="btn btn-ghost" title="Help / Support">Help</button>
+          <div id="avatar" class="avatar" title="Signed in">A</div>
+          <button id="logoutBtn" class="btn btn-ghost" title="Logout">Logout</button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="panel" role="region" aria-labelledby="panel-title">
+          <div class="checklist-title">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect width="24" height="24" rx="4" fill="#e6f9ee"></rect>
+              <path d="M9 12.5l2 2 4-5" stroke="#0f6b45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <h3 id="panel-title">PROTOCOL SUBMISSION CHECKLIST</h3>
+              <small style="color:#6b7f86">Indicate the documents that are attached to the full protocol</small>
+            </div>
+          </div>
+
+          <form id="checklistForm" aria-label="Protocol checklist">
+            <table class="checklist-table" role="table" aria-describedby="panel-title">
+              <tbody>
+                <!-- Each row: description + checkbox + inline help -->
+                <tr>
+                  <td class="checklist-item required">Letter of attestation of investigators - Request for prototype</td>
+                  <td class="check-col">
+                    <label class="checkbox" title="Yes/No">
+                      <input type="checkbox" name="item0" data-required="true" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite">You must have this before you can submit your application</div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="checklist-item required">Informed Consent Document</td>
+                  <td class="check-col">
+                    <label class="checkbox">
+                      <input type="checkbox" name="item1" data-required="true" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite">You must have this before you can submit your application</div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="checklist-item">Patient Information Leaflet (If applicable)</td>
+                  <td class="check-col">
+                    <label class="checkbox">
+                      <input type="checkbox" name="item2" data-required="false" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite"></div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="checklist-item required">All questionnaires</td>
+                  <td class="check-col">
+                    <label class="checkbox">
+                      <input type="checkbox" name="item3" data-required="true" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite">You must have this before you can submit your application</div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="checklist-item required">Letters from collaborators, supervisors, certificates/letter (s) of approval etc</td>
+                  <td class="check-col">
+                    <label class="checkbox">
+                      <input type="checkbox" name="item4" data-required="true" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite">You must have this before you can submit your application</div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="checklist-item required">Signed investigators responsibilities declaration</td>
+                  <td class="check-col">
+                    <label class="checkbox">
+                      <input type="checkbox" name="item5" data-required="true" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite">You must have this before you can submit your application</div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="checklist-item required">Budget</td>
+                  <td class="check-col">
+                    <label class="checkbox">
+                      <input type="checkbox" name="item6" data-required="true" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite">You must have this before you can submit your application</div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="checklist-item required">CV of all investigators (Research/Project Team)</td>
+                  <td class="check-col">
+                    <label class="checkbox">
+                      <input type="checkbox" name="item7" data-required="true" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite">You must have this before you can submit your application</div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="checklist-item required">Certification of ethics training - online or physical</td>
+                  <td class="check-col">
+                    <label class="checkbox">
+                      <input type="checkbox" name="item8" data-required="true" />
+                      <span class="tick">✓</span>
+                    </label>
+                    <div class="field-help" aria-live="polite">You must have this before you can submit your application</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="panel-actions">
+              <button id="saveBtn" type="button" class="btn btn-primary">Save progress</button>
+              <button id="nextBtn" type="button" class="btn">Next →</button>
+              <div style="margin-left:auto; color:#6b7f86; font-size:0.95rem;" id="statusMsg">Not saved</div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const form = document.getElementById('checklistForm');
+      const inputs = Array.from(form.querySelectorAll('input[type="checkbox"]'));
+      const saveBtn = document.getElementById('saveBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const statusMsg = document.getElementById('statusMsg');
+
+      const storageKey = 'nhrec_checklist_v1';
+
+      // Restore checkboxes from localStorage (if exists)
+      function restore(){
+        try {
+          const raw = localStorage.getItem(storageKey);
+          if (!raw) {
+            // No saved data: leave all unchecked and show required warnings below
+            inputs.forEach(cb => {
+              cb.checked = false;
+            });
+            showInitialWarnings();
+            return;
+          }
+          const data = JSON.parse(raw);
+          inputs.forEach((cb, i) => {
+            cb.checked = !!data['item'+i];
+          });
+          // After restoring, update warnings according to saved checked state
+          updateAllWarnings();
+          statusMsg.textContent = 'Loaded saved progress';
+        } catch(e) { console.warn('restore error', e); showInitialWarnings(); }
+      }
+
+      // Show warnings for required items that are unchecked (used when no saved state)
+      function showInitialWarnings(){
+        inputs.forEach(cb => {
+          const help = cb.closest('td').querySelector('.field-help');
+          if (cb.dataset.required === "true") {
+            if (!cb.checked && help) help.classList.add('visible');
+            else if (help) help.classList.remove('visible');
+          } else {
+            if (help) help.classList.remove('visible');
+          }
+        });
+      }
+
+      // Update warnings based on current checkbox states
+      function updateAllWarnings(){
+        inputs.forEach(cb => {
+          const help = cb.closest('td').querySelector('.field-help');
+          if (cb.dataset.required === "true") {
+            if (!cb.checked && help) help.classList.add('visible');
+            else if (help) help.classList.remove('visible');
+          } else {
+            if (help) help.classList.remove('visible');
+          }
+        });
+      }
+
+      restore();
+
+      function save(){
+        const data = {};
+        inputs.forEach((cb, i) => data['item'+i] = cb.checked);
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        statusMsg.textContent = 'Saved locally';
+        setTimeout(()=> statusMsg.textContent = 'Saved locally', 1200);
+      }
+
+      saveBtn.addEventListener('click', save);
+
+      // Validate required items and show inline messages (also scroll to first invalid)
+      function validateRequired(){
+        const requiredInputs = inputs.filter(cb => cb.dataset.required === "true");
+        const invalids = [];
+
+        requiredInputs.forEach(cb => {
+          const help = cb.closest('td').querySelector('.field-help');
+          if (!cb.checked) {
+            invalids.push(cb);
+            if (help) help.classList.add('visible');
+          } else {
+            if (help) help.classList.remove('visible');
+          }
+        });
+
+        if (invalids.length > 0) {
+          // scroll to first invalid row
+          const first = invalids[0].closest('tr');
+          first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return { valid: false, firstInvalid: invalids[0] };
+        }
+        return { valid: true };
+      }
+
+      nextBtn.addEventListener('click', () => {
+        const v = validateRequired();
+        if (!v.valid) {
+          statusMsg.textContent = 'Please complete required items';
+          setTimeout(() => statusMsg.textContent = 'Not saved', 1600);
+          return;
+        }
+        // All required checked: save and proceed
+        save();
+        // Demo: go to next step - replace with your real URL
+        window.location.href = 'application-step2.html';
+      });
+
+      // When user toggles checkbox, update its inline help immediately and status
+      inputs.forEach(cb => {
+        cb.addEventListener('change', () => {
+          const help = cb.closest('td').querySelector('.field-help');
+          if (cb.dataset.required === "true") {
+            if (!cb.checked && help) help.classList.add('visible');
+            else if (help) help.classList.remove('visible');
+          } else {
+            if (help) help.classList.remove('visible');
+          }
+          // Update status text to show "Not saved" until user clicks Save
+          statusMsg.textContent = 'Not saved';
+        });
+      });
+
+      // Logout
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        window.location.href = 'Login.html';
+      });
+
+      // Help button
+      document.getElementById('helpBtn').addEventListener('click', () => {
+        alert('For help, contact portal@nhrec.gov.ng or consult the FAQs.');
+      });
+
+      // show logged-in email initial in avatar if available
+      const avatar = document.getElementById('avatar');
+      try {
+        const loggedEmail = localStorage.getItem('nhrec_user_email');
+        if (loggedEmail) {
+          avatar.textContent = loggedEmail[0].toUpperCase();
+          avatar.title = loggedEmail;
+        }
+      } catch(e){ /* ignore */ }
+
+    })();
+  </script>
+</body>
+</html>

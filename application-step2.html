@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">Nigeria
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NRECOI — New Application</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    :root { --portal-green: #0f6b45; --portal-dark: #0b4f36; --panel-bg:#fff; }
+    .portal-wrap { display:flex; min-height:100vh; background:#f3f6f8; }
+
+    /* Sidebar (same as portal) */
+    .portal-sidebar { width:160px; background:var(--portal-green); color:#fff; padding:2rem 1.25rem; box-shadow:2px 0 6px rgba(0,0,0,0.06); display:flex; flex-direction:column; gap:1rem; }
+    .portal-brand { display:flex; gap:0.8rem; align-items:center; margin-bottom:1rem; }
+    .portal-brand img { width:36px;height:36px;border-radius:6px;background:#fff;padding:3px; }
+    .sidebar-link { display:block; padding:10px 12px; border-radius:8px; color:#e6f7ef; font-weight:600; margin:6px 0; }
+    .sidebar-link.active { background: rgba(255,255,255,0.06); color:#fff; }
+
+    .portal-main { flex:1; display:flex; flex-direction:column; }
+    .portal-header { height:64px; background: linear-gradient(90deg,var(--portal-green),var(--portal-dark)); color:white; display:flex; align-items:center; justify-content:space-between; padding:0 20px; box-shadow:0 2px 6px rgba(0,0,0,0.06); }
+    .header-actions { display:flex; gap:12px; align-items:center; }
+    .avatar { width:36px;height:36px;border-radius:50%;background:#ffffff22;display:inline-flex;align-items:center;justify-content:center;color:white;font-weight:700; }
+
+    .content { padding:28px; }
+    .panel { background:var(--panel-bg); border-radius:10px; padding:22px; box-shadow:0 1px 4px rgba(10,10,10,0.04); }
+
+    .form-row { display:flex; gap:20px; align-items:center; margin-top:12px; }
+    .form-label { flex:0 0 42%; font-weight:700; color:#0b2b3a; }
+    .form-control { flex:1; }
+
+    select, input[type="text"], textarea {
+      width:100%; padding:12px; border:1px solid #d6dbe0; border-radius:8px; font-size:1rem;
+    }
+
+    .actions { margin-top:18px; display:flex; gap:12px; align-items:center; }
+    .btn { padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
+    .btn-primary { background:#1fb35d; color:white; }
+    .btn-ghost { background:transparent; border:1px solid #d1d7da; color:#0b2b3a; }
+
+    .helper { color:#6b7f86; font-size:0.95rem; margin-top:8px; }
+
+    @media (max-width:900px){ .portal-sidebar{display:none;} .portal-header{padding:0 12px;} .form-row{flex-direction:column;align-items:stretch;} .form-label{flex:auto;} }
+  </style>
+</head>
+<body>
+  <div class="portal-wrap">
+    <aside class="portal-sidebar" role="navigation" aria-label="Main navigation">
+      <div class="portal-brand">
+        <img src="image/logo.png" alt="NHREC logo" />
+        <div>
+          <strong>NHREC</strong><br /><small style="opacity:0.9">Research Ethics Portal</small>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="portal.html">Home</a>
+        <a class="sidebar-link" href="#">My Profile</a>
+
+        <div style="opacity:0.9; font-size:0.85rem; margin:8px 0;">APPLICATION</div>
+        <a class="sidebar-link active" href="#">New Application</a>
+        <a class="sidebar-link" href="#">View Applications</a>
+
+        <div style="margin-top:auto; font-size:0.95rem; opacity:0.9;">© 2025 NRECOI</div>
+      </nav>
+    </aside>
+
+    <main class="portal-main">
+      <header class="portal-header">
+        <h2>National Research Ethics Committee</h2>
+        <div class="header-actions">
+          <button id="helpBtn" class="btn btn-ghost">Help</button>
+          <div id="avatar" class="avatar">A</div>
+          <button id="logoutBtn" class="btn btn-ghost">Logout</button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="panel" role="region" aria-labelledby="form-title">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden><rect width="24" height="24" rx="4" fill="#e6f9ee"></rect><path d="M9 12.5l2 2 4-5" stroke="#0f6b45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>
+              <h3 id="form-title" style="margin:0;color:#0b2b3a;">New Application Form</h3>
+              <small class="helper">Home - New Application</small>
+            </div>
+          </div>
+
+          <!-- Form content -->
+          <form id="appForm" novalidate>
+            <div class="form-row">
+              <div class="form-label">What type of research are you conducting</div>
+              <div class="form-control">
+                <select id="researchType" required>
+                  <option value="">What type of research are you conducting</option>
+                  <option value="clinical">Clinical Research</option>
+                  <option value="observational">Observational Study</option>
+                  <option value="survey">Survey / Questionnaire</option>
+                  <option value="laboratory">Laboratory / Basic Science</option>
+                  <option value="community">Community-based Research</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="otherRow" class="form-row" style="display:none;">
+              <div class="form-label">If other, specify</div>
+              <div class="form-control">
+                <input type="text" id="researchOther" placeholder="Describe other research type" />
+              </div>
+            </div>
+
+            <div class="actions">
+              <button id="backBtn" type="button" class="btn btn-ghost">Back</button>
+              <button id="saveBtn" type="button" class="btn btn-primary">Save & Continue</button>
+              <div style="margin-left:auto; color:#6b7f86;" id="statusMsg">Not saved</div>
+            </div>
+          </form>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      // Basic access check: redirect to Login if not logged in
+      try {
+        const logged = localStorage.getItem('nhrec_logged_in');
+        if (!logged) {
+          window.location.href = 'Login.html';
+          return;
+        }
+      } catch(e){ /* ignore */ }
+
+      const researchType = document.getElementById('researchType');
+      const otherRow = document.getElementById('otherRow');
+      const researchOther = document.getElementById('researchOther');
+      const saveBtn = document.getElementById('saveBtn');
+      const backBtn = document.getElementById('backBtn');
+      const statusMsg = document.getElementById('statusMsg');
+
+      const storageKey = 'nhrec_application_step2';
+
+      // Prefill avatar from stored email
+      try {
+        const avatar = document.getElementById('avatar');
+        const loggedEmail = localStorage.getItem('nhrec_user_email');
+        if (loggedEmail) {
+          avatar.textContent = loggedEmail[0].toUpperCase();
+          avatar.title = loggedEmail;
+        }
+      } catch(e){}
+
+      // Restore saved data
+      function restore(){
+        try {
+          const raw = localStorage.getItem(storageKey);
+          if (!raw) return;
+          const data = JSON.parse(raw);
+          if (data.researchType) researchType.value = data.researchType;
+          if (data.researchOther) researchOther.value = data.researchOther;
+          updateOtherRow();
+          statusMsg.textContent = 'Loaded saved progress';
+        } catch(e) { console.warn('restore error', e); }
+      }
+      restore();
+
+      function updateOtherRow(){
+        if (researchType.value === 'other') {
+          otherRow.style.display = 'flex';
+        } else {
+          otherRow.style.display = 'none';
+          researchOther.value = '';
+        }
+      }
+
+      researchType.addEventListener('change', () => {
+        updateOtherRow();
+        statusMsg.textContent = 'Not saved';
+      });
+
+      saveBtn.addEventListener('click', () => {
+        // Validate: researchType must be selected
+        if (!researchType.value) {
+          alert('Please choose a research type before continuing.');
+          researchType.focus();
+          return;
+        }
+        // If 'other' chosen, ensure other field not empty
+        if (researchType.value === 'other' && researchOther.value.trim().length === 0) {
+          alert('Please describe the research type in the "If other, specify" field.');
+          researchOther.focus();
+          return;
+        }
+
+        const data = {
+          researchType: researchType.value,
+          researchOther: researchOther.value.trim()
+        };
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        statusMsg.textContent = 'Saved locally';
+        // proceed to next step (demo)
+        setTimeout(() => { window.location.href = 'application-step3.html'; }, 300);
+      });
+
+      backBtn.addEventListener('click', () => {
+        window.location.href = 'portal.html';
+      });
+
+      // help & logout handlers
+      document.getElementById('helpBtn').addEventListener('click', () => {
+        alert('Need help? Contact portal@nhrec.gov.ng or consult the FAQs.');
+      });
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        window.location.href = 'Login.html';
+      });
+
+    })();
+  </script>
+</body>
+</html>

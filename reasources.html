@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resources | NHREC</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* small extra styles for resource page */
+    .resources-hero { padding:2rem 0; text-align:center; }
+    .resources-search { max-width:700px; margin:1rem auto 2rem; display:flex; gap:.5rem; }
+    .resources-search input{ flex:1; padding:.6rem .8rem; border-radius:6px; border:1px solid #e6eef8; }
+    .resources-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:1rem; margin-top:1rem; }
+    .resource-card { background:#fff; padding:1rem; border-radius:8px; box-shadow:0 6px 18px rgba(2,6,23,0.05); }
+    .registry-table { width:100%; border-collapse:collapse; margin-top:1rem; }
+    .registry-table th, .registry-table td { padding:.6rem .8rem; border:1px solid #eef2f7; text-align:left; }
+    .small-muted { color: #64748b; font-size:0.95rem; }
+    .download-link { display:inline-block; margin-top:.5rem; background:#eef6ff; padding:.4rem .6rem; border-radius:6px; color:var(--blue); text-decoration:none; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="image/logo.png" alt="NHREC Logo" class="logo" />
+        <div>
+          <h1>Resources & Downloads</h1>
+          <p class="tagline">Guidelines, templates, registered ethics committees and SOPs</p>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="news.html">News</a>
+        <a href="reasources.html">Resources</a>
+        <a href="researches.html">Researches</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html" class="btn-primary">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="resources-hero">
+      <h2>Downloads & Registries</h2>
+      <p class="small-muted">Find NHREC guidance documents, application templates, the registered ethics committees directory, and SOPs.</p>
+
+      <div class="resources-search" role="search" aria-label="Search resources">
+        <input id="resourceSearch" type="search" placeholder="Search resources, guidelines or committees..." />
+        <button id="resourceSearchBtn" class="btn-primary">Search</button>
+      </div>
+    </section>
+
+    <section class="resources-grid">
+      <div class="resource-card">
+        <h3>National Ethics Guidelines</h3>
+        <p class="small-muted">Comprehensive national guidelines for ethical conduct of health research.</p>
+        <p><a href="#" class="download-link" onclick="alert('Replace with real PDF link')">Download PDF</a></p>
+      </div>
+
+      <div class="resource-card">
+        <h3>Application Templates</h3>
+        <p class="small-muted">Forms and templates for submitting protocols, informed consent, and monitoring reports.</p>
+        <ul>
+          <li><a href="#" onclick="alert('Replace with form link')">Ethics Review Application (DOCX)</a></li>
+          <li><a href="#" onclick="alert('Replace with form link')">Informed Consent Template (DOCX)</a></li>
+        </ul>
+      </div>
+
+      <div class="resource-card">
+        <h3>Process Map & SOPs</h3>
+        <p class="small-muted">Step-by-step process map for submission, review, and approval including timelines.</p>
+        <p><a href="#" class="download-link" onclick="alert('Replace with SOP link')">Download SOPs</a></p>
+      </div>
+
+      <div class="resource-card">
+        <h3>Guidance for Specific Research</h3>
+        <p class="small-muted">Special guidance (e.g., vulnerable populations, clinical trials, genomic research).</p>
+        <p><a href="#" onclick="alert('Replace with guidance link')">See guidance list</a></p>
+      </div>
+    </section>
+
+    <section style="margin-top:2rem;">
+      <h3>Registered Institutional Ethics Committees</h3>
+      <p class="small-muted">The registry below lists accredited IRBs/IECs. Use the search above to filter the list.</p>
+
+      <table class="registry-table" id="registryTable" aria-describedby="registryDesc">
+        <caption id="registryDesc" style="caption-side:bottom; text-align:left; font-size:.95rem; color:var(--gray);">Sample registry — replace with real registry export (CSV/JSON).</caption>
+        <thead>
+          <tr>
+            <th>Institution</th>
+            <th>Committee Name</th>
+            <th>State</th>
+            <th>Contact</th>
+            <th>Registered Since</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JS will populate rows -->
+        </tbody>
+      </table>
+
+      <p style="margin-top:.6rem;">
+        <a href="#" onclick="alert('Replace with registry download')">Download full registry (CSV)</a>
+      </p>
+    </section>
+
+    <section style="margin-top:2rem;">
+      <h3>Frequently Downloaded</h3>
+      <div class="card-grid" aria-live="polite" id="popularResources">
+        <!-- JS populates -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 NHREC. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script>
+    // Populate registry and popular resources with sample data (replace with real data or fetch)
+    (function(){
+      const registry = [
+        { institution: 'University of Health', committee: 'UoH Ethics Committee', state:'Abuja', contact:'ethics@uoh.edu.ng', since:'2019' },
+        { institution: 'Institute of Public Health', committee: 'IPH Research Ethics', state:'Lagos', contact:'contact@iph.org', since:'2020' },
+        { institution: 'State Teaching Hospital', committee: 'STH Ethics Board', state:'Kano', contact:'sth-ethics@hospital.ng', since:'2018' }
+      ];
+      const tbody = document.querySelector('#registryTable tbody');
+      registry.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${escapeHtml(r.institution)}</td>
+                        <td>${escapeHtml(r.committee)}</td>
+                        <td>${escapeHtml(r.state)}</td>
+                        <td><a href="mailto:${encodeURIComponent(r.contact)}">${escapeHtml(r.contact)}</a></td>
+                        <td>${escapeHtml(r.since)}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      const popular = [
+        { title:'National Ethics Guidelines (PDF)', link:'#' },
+        { title:'Ethics Review Application (DOCX)', link:'#' },
+        { title:'Informed Consent Template (DOCX)', link:'#' }
+      ];
+      const popularGrid = document.getElementById('popularResources');
+      popular.forEach(p => {
+        const d = document.createElement('div');
+        d.className = 'resource-card';
+        d.innerHTML = `<h4>${escapeHtml(p.title)}</h4><p><a class="download-link" href="#" onclick="alert('Replace with real download')">Download</a></p>`;
+        popularGrid.appendChild(d);
+      });
+
+      // Search functionality
+      document.getElementById('resourceSearchBtn').addEventListener('click', () => {
+        const q = document.getElementById('resourceSearch').value.trim().toLowerCase();
+        if (!q) { // show all
+          tbody.querySelectorAll('tr').forEach(tr => tr.style.display='');
+          return;
+        }
+        tbody.querySelectorAll('tr').forEach(tr => {
+          const text = tr.textContent.toLowerCase();
+          tr.style.display = text.indexOf(q) !== -1 ? '' : 'none';
+        });
+      });
+
+      // helper
+      function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    })();
+  </script>
+</body>
+</html>
